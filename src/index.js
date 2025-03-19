@@ -1,121 +1,121 @@
 import styles from "./styles.css"
+import {getTodos, getProjects} from "./logic.js";
 
-const allTodos = [
-    {   
-        partOfProject: 0,
-        title: `Make Coffee`,
-        description: `Make coffe in the morning`,
-        dueDate: `20-03-2025`,
-        priority: `high`,
-        checklist: false
-    },
-    {
-        partOfProject: 1,
-        title: `Do Homework`,
-        description: `Do homework this day`,
-        dueDate: `20-03-2025`,
-        priority: `high`,
-        checklist: false
-    },
-    {
-        partOfProject: 2,
-        title: `Sleep early`,
-        description: `Sleep early this day`,
-        dueDate: `22-03-2025`,
-        priority: `high`,
-        checklist: false
-    }
-];
+const main = document.querySelector(`main`);
 
-const getTodos = () => allTodos;
+const reset = () => main.innerHTML = ``;
 
+const todoList = function(index){
+    const todos = getTodos();
 
-const createTodo = function (partOfProject,title,description,dueDate,priority,checklist) {
+    reset();
 
-    const todo =
-        {
-            partOfProject: partOfProject,
-            title: title,
-            description: description,
-            dueDate: dueDate,
-            priority: priority,
-            checklist: checklist
-        };
+    const todoLists = document.createElement(`div`);
+    todoLists.className = "todo-list";
+    main.appendChild(todoLists);
 
-    allTodos.push(todo);
-    return allTodos;
-};
+    const div = document.createElement(`div`);
+    todoLists.appendChild(div);
+    
+    const projectName = document.createElement(`h2`);
+    projectName.textContent = `Project Name`;
+    div.appendChild(projectName);
 
-createTodo(3,`Eat outside`,`Eat fast food at a fast food joint`,`25-03-2025`,`low`,false);
-createTodo(3,`Go to a park`,`Go take a walk in the park`,`15-03-2025`,`low`,true);
-createTodo(2,`Wake up early`,`Wake up early on this day`,`26-03-2025`,`high`,false);
-createTodo(2,`Wake up late`,`Wake up late on this day`,`28-03-2025`,`low`,false);
+    const div2 = document.createElement(`div`);
+    div2.className = "todo-cards";
+    todoLists.appendChild(div2);
 
-
-
-const Todos = (function(){
-    const printTodos = getTodos();
-
-    return printTodos.forEach((todo,index) => {
-        // console.log(`Todo: ${index + 1} Title: ${todo.title}`);
+    todos.forEach(todo => {
+        if(todo.partOfProject === index){
+            const card = document.createElement(`div`);
+            card.className = "card";
+            div2.appendChild(card);
+    
+            const title = document.createElement(`h2`);
+            title.textContent = todo.title;
+            card.appendChild(title);
+    
+            const description = document.createElement(`p`);
+            description.textContent = todo.description;
+            card.appendChild(description);
+    
+            const dueDate = document.createElement(`p`);
+            dueDate.textContent = todo.dueDate;
+            card.appendChild(dueDate);
+    
+            const priority = document.createElement(`h2`);
+            priority.textContent = todo.priority;
+            card.appendChild(priority);
+    
+            const checklist = document.createElement(`p`);
+            checklist.textContent = todo.checklist;
+            card.appendChild(checklist);
+    
+    
+            const div = document.createElement(`div`);
+            card.appendChild(div);    
+            const button1 = document.createElement(`button`);
+            button1.id = 'open-btn';
+            button1.textContent = "Open";
+            div.appendChild(button1);
+            const button2 = document.createElement(`button`);
+            button2.textContent = "Delete";
+            button2.id = 'delete';
+            div.appendChild(button2);
+        
+        }
+        
     });
 
-})();
 
-
-const allProjects = [        
-    { 
-        name: `Morning Routine`,
-        description: `About early mornings`,
-    }
-];
-
-const getProjects = () => allProjects;
-
-
-const createProject = function(name,description){
-    const project = 
-        {
-            name: name,
-            description: description
-        };
-
-    allProjects.push(project);
-
-    return allProjects;
 };
 
-createProject(`Study`,`About study routine`);
-createProject(`Sleeping Schedule`,`To fix and keep a watch on sleeping schedule`);
-createProject(`Outside`,`Todos about outside life`);
-
-const Projects = (function(){
-    const printProjects = projectTodoWrapper();
-
-    return printProjects;
-
-})();
-
-function projectTodoWrapper(){
-    const todos = getTodos();
+const renderProjectLists = (function () {
+    
     const projects = getProjects();
 
-    return projects.forEach((project,index) => {
-            console.log(`Project ${index + 1} ${project.name}`);
-            todos.forEach(todo => {
-                if(todo.partOfProject === index){
-                    console.log(`Part of ${project.name} `);
-                    console.log(`
-                        Title: ${todo.title}
-                        Description: ${todo.description}
-                        Due Date: ${todo.dueDate}
-                        Priority: ${todo.priority}
-                        Checklist: ${todo.checklist}
-                        `);
-                };
-            });
+    const projectContainer = document.createElement(`div`);
+    projectContainer.className = "project-container";
+    main.appendChild(projectContainer);
+
+    projects.forEach(project => {
+        const card = document.createElement(`div`);
+        card.className = "card";
+        projectContainer.appendChild(card);
+
+        const name = document.createElement(`h2`);
+        name.textContent = project.name;
+        card.appendChild(name);
+
+        const description = document.createElement(`p`);
+        description.textContent = project.description;
+        card.appendChild(description);
+
+        const div = document.createElement(`div`);
+        card.appendChild(div);    
+        const button1 = document.createElement(`button`);
+        button1.id = 'open-btn';
+        button1.textContent = "Open";
+        div.appendChild(button1);
+        const button2 = document.createElement(`button`);
+        button2.textContent = "Delete";
+        button2.id = 'delete';
+        div.appendChild(button2);
+
     });
-}
+
+    const openBtn = document.querySelectorAll(`#open-btn`);
+    openBtn.forEach((button,index) => 
+        button.addEventListener(`click`, () => {
+            todoList(index);
+    }));
+
+
+})();
+
+
+
+
 
 
 
