@@ -26,3 +26,13 @@
             priority: `low`,
             checklist: true
         }
+
+
+todo has a value that points to index of project
+
+function projectTodoWrapper
+    checks if todo part of project(index + 1)
+    prints all the todos
+
+project IIFE 
+    prints projectTodoWrapper()

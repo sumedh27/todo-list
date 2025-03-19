@@ -1,24 +1,27 @@
 import styles from "./styles.css"
 
 const allTodos = [
-    { 
-        title: `Test`,
-        description: `This is a test`,
-        dueDate: `22-02-2025`,
+    {   
+        partOfProject: 0,
+        title: `Make Coffee`,
+        description: `Make coffe in the morning`,
+        dueDate: `20-03-2025`,
         priority: `high`,
         checklist: false
     },
     {
-        title: `Test2`,
-        description: `This is a SECOND TEST`,
-        dueDate: `22-02-2026`,
-        priority: `low`,
+        partOfProject: 1,
+        title: `Do Homework`,
+        description: `Do homework this day`,
+        dueDate: `20-03-2025`,
+        priority: `high`,
         checklist: false
     },
     {
-        title: `Test3`,
-        description: `This is a THIRD TEST`,
-        dueDate: `22-02-2025`,
+        partOfProject: 2,
+        title: `Sleep early`,
+        description: `Sleep early this day`,
+        dueDate: `22-03-2025`,
         priority: `high`,
         checklist: false
     }
@@ -27,10 +30,11 @@ const allTodos = [
 const getTodos = () => allTodos;
 
 
-const createTodo = function (title,description,dueDate,priority,checklist) {
+const createTodo = function (partOfProject,title,description,dueDate,priority,checklist) {
 
     const todo =
         {
+            partOfProject: partOfProject,
             title: title,
             description: description,
             dueDate: dueDate,
@@ -42,18 +46,18 @@ const createTodo = function (title,description,dueDate,priority,checklist) {
     return allTodos;
 };
 
-createTodo(`THIS IS A NEW TEST`,`THIS IS NEW DESCRIPTION LULW`,`23-12-2004`,`low`,true);
-createTodo(`THIS IS A NEW TEST`,`THIS IS NEW DESCRIPTION LULW`,`23-12-2004`,`low`,true);
-createTodo(`THIS IS A NEW TEST`,`THIS IS NEW DESCRIPTION LULW`,`23-12-2004`,`low`,true);
+createTodo(3,`Eat outside`,`Eat fast food at a fast food joint`,`25-03-2025`,`low`,false);
+createTodo(3,`Go to a park`,`Go take a walk in the park`,`15-03-2025`,`low`,true);
+createTodo(2,`Wake up early`,`Wake up early on this day`,`26-03-2025`,`high`,false);
+createTodo(2,`Wake up late`,`Wake up late on this day`,`28-03-2025`,`low`,false);
 
 
-console.log(getTodos());
 
 const Todos = (function(){
     const printTodos = getTodos();
 
     return printTodos.forEach((todo,index) => {
-        console.log(`Todo: ${index + 1} Title: ${todo.title}`);
+        // console.log(`Todo: ${index + 1} Title: ${todo.title}`);
     });
 
 })();
@@ -61,8 +65,8 @@ const Todos = (function(){
 
 const allProjects = [        
     { 
-        name: `Test`,
-        description: `This is a test`,
+        name: `Morning Routine`,
+        description: `About early mornings`,
     }
 ];
 
@@ -81,21 +85,37 @@ const createProject = function(name,description){
     return allProjects;
 };
 
-createProject(`test`,`testasdasdasd`);
-createProject(`tes1t`,`testasdasdasd`);
-createProject(`tes2t`,`testasdasdasd`);
-
-console.log(getProjects());
+createProject(`Study`,`About study routine`);
+createProject(`Sleeping Schedule`,`To fix and keep a watch on sleeping schedule`);
+createProject(`Outside`,`Todos about outside life`);
 
 const Projects = (function(){
-    const printProjects = getProjects();
+    const printProjects = projectTodoWrapper();
 
-    return printProjects.forEach((project,index) => {
-        console.log(`Project Number: ${index + 1} Project Name: ${project.name}`);
-    });
+    return printProjects;
 
 })();
 
+function projectTodoWrapper(){
+    const todos = getTodos();
+    const projects = getProjects();
+
+    return projects.forEach((project,index) => {
+            console.log(`Project ${index + 1} ${project.name}`);
+            todos.forEach(todo => {
+                if(todo.partOfProject === index){
+                    console.log(`Part of ${project.name} `);
+                    console.log(`
+                        Title: ${todo.title}
+                        Description: ${todo.description}
+                        Due Date: ${todo.dueDate}
+                        Priority: ${todo.priority}
+                        Checklist: ${todo.checklist}
+                        `);
+                };
+            });
+    });
+}
 
 
 
