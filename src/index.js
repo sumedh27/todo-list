@@ -1,5 +1,5 @@
 import styles from "./styles.css"
-import {getTodos, getProjects,displayTodos} from "./logic.js";
+import {getTodos, getProjects,displayTodos,deleteProject,deleteTodo} from "./logic.js";
 
 const main = document.querySelector(`main`);
 
@@ -20,6 +20,7 @@ const renderProjectLists = function () {
     projects.forEach(project => {
         const card = document.createElement(`div`);
         card.className = "card";
+        card.classList.add(`${project.UUID}`);
         projectContainer.appendChild(card);
 
         const name = document.createElement(`h2`);
@@ -38,8 +39,8 @@ const renderProjectLists = function () {
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.setAttribute('data-unique-id', `${project.UUID}`);
         button2.id = 'delete-btn';
+        button2.onclick = deleteProject;
         div.appendChild(button2);
 
     });
@@ -52,16 +53,6 @@ const renderProjectLists = function () {
     }));
 
 
-    const deleteBtn = document.querySelectorAll(`#delete-btn`);
-    
-
-    deleteBtn.forEach((button,index) => 
-        button.addEventListener(`click`, () => {
-            console.log(deleteBtn[index].dataset.uniqueId)
-            // reset();
-            // renderProjectLists();
-    }));
-    
 };
 
 
@@ -89,8 +80,6 @@ const todoList = function(index){
     const displayTodo = displayTodos(index);
     const project = getProjects();
 
-    console.log(displayTodo);
-
     reset();
 
     const todoLists = document.createElement(`div`);
@@ -108,9 +97,23 @@ const todoList = function(index){
     div2.className = "todo-cards";
     todoLists.appendChild(div2);
 
-    displayTodo.forEach(todo => {
+    // const deleteTodo = function(){
+    //     const todoId = this.previousSibling.classList[0];
+    
+    //     const findTodo = displayTodo.findIndex(
+    //       (element) => element.UUID === todoId
+    //     );
+    //     const delBook = displayTodo.splice(findTodo, 1);
+    //     console.log(displayTodo);
+    //     this.previousSibling.remove();
+    // }
+    
+
+    displayTodo.forEach((todo) => {
+            console.log(index);
             const card = document.createElement(`div`);
             card.className = "card";
+            card.classList.add(`${todo.UUID}`);
             div2.appendChild(card);
     
             const title = document.createElement(`h2`);
@@ -143,15 +146,21 @@ const todoList = function(index){
             const button2 = document.createElement(`button`);
             button2.textContent = "Delete";
             button2.id = 'delete-todo-btn';
+            button2.onclick = deleteTodo;
             div.appendChild(button2);
+
+            // const deleteBtn = document.querySelectorAll(`#delete-todo-btn`);
+            // deleteBtn.forEach((button,index) => 
+            //     button.addEventListener(`click`, () => {
+            //         displayTodo.find(todo => {
+            //             if(todo.UUID == deleteBtn[index].dataset.uniqueId){
+            //                 console.log(`test`);
+            //             }
+            //         });                 
+            // }));
         
     });
 
-    const deleteBtn = document.querySelectorAll(`#delete-todo-btn`);
-    deleteBtn.forEach((button,index) => 
-        button.addEventListener(`click`, () => {
-            console.log(index);
-    }));
 
 };
 

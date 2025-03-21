@@ -1,6 +1,7 @@
 const allTodos = [
     {   
         UUID: crypto.randomUUID(),
+        // UUID: "asdf",
         partOfProject: 1,
         title: `Make Coffee`,
         description: `Make coffe in the morning`,
@@ -10,6 +11,7 @@ const allTodos = [
     },
     {
         UUID: crypto.randomUUID(),
+        // UUID: "wwf",
         partOfProject: 2,
         title: `Do Homework`,
         description: `Do homework this day`,
@@ -120,9 +122,52 @@ const displayTodos = function(id){
 }
 
 
+const deleteTodo = function(){
+    const parentDiv = this.parentElement
+    const todoId = parentDiv.parentElement.classList[1];
+
+    const todos = getTodos();
+
+    const findIndex = todos.findIndex(todo => todo.UUID === todoId );
+
+    todos.splice(findIndex,1);
+
+    parentDiv.parentElement.remove();
+
+
+}
+
+const deleteProject = function(){
+    const parentDiv = this.parentElement
+    const projectId = parentDiv.parentElement.classList[1];
+
+    const projects = getProjects();
+
+    const findIndex = projects.findIndex(todo => todo.UUID === projectId );
+    
+    const todos = getTodos();
+    const projectTodos = displayTodos(findIndex);
+
+    projects.splice(findIndex,1);
+
+    // const deleteTodos = todos.filter(todo => todo);
+    // console.log(deleteTodos);
+    projectTodos.forEach((projectTodo) =>{ 
+
+            const getIndex = todos.findIndex(todo => todo.UUID === projectTodo.UUID);
+            todos.splice(getIndex,1);
+    });
+
+
+
+    console.log(getTodos());
+    parentDiv.parentElement.remove();
+
+}
+
 console.log(getProjects());
 console.log(getTodos());
 
 
 
-export {getTodos, getProjects,displayTodos}; 
+export {getTodos, getProjects,displayTodos,deleteTodo,deleteProject}; 
