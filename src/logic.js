@@ -45,7 +45,7 @@ createTodos(2,`Walk in the Park`,`Take a nice lil walk in the evening in nearest
 const deleteTodo = function(projectName,todoName){
     
     const findProjectIndex = allProjects.findIndex(project => project.name === projectName);
-    const findTodoIndex = allProjects[findProjectIndex].findIndex(todo => todo.name === todoName);
+    const findTodoIndex = allProjects[findProjectIndex].todoList.findIndex(todo => todo.name === todoName);
 
     // const todos = allProjects[findProjectIndex].todoList;
 
@@ -54,6 +54,7 @@ const deleteTodo = function(projectName,todoName){
     // console.log(allProjects[0].todoList[1])
 
     allProjects[findProjectIndex].todoList.splice(findTodoIndex,1);
+    console.table(allProjects)
 }
 
 // deleteTodo(`Workout`,0);

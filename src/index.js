@@ -141,7 +141,7 @@ const populateTodo = function(index){
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.onclick = function() { console.log(project.name)}
+        button2.onclick = function() { deleteTodo(projName,todo.name); reset(); populateTodo(index)}
         button2.id = 'delete-todo-btn';
         div.appendChild(button2);
     });
