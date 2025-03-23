@@ -18,6 +18,16 @@
             <button type="submit" id="submit-project-button">Submit</button>
           </form>
     </dialog>
+
+    <dialog class="create-todo">
+        <form class="todo-form" method="dialog">
+            <label for="todo-title">Enter Todo Title</label>
+            <input id="todo-title" name="todo-title" type="text"  required/>
+            <button formmethod="dialog" type="button" id="cancel-button" onclick="document.querySelector(`.create-todo`).close()">Cancel</button>
+            <button type="submit" id="submit-project-button">Submit</button>
+          </form>
+    </dialog>
+
     <main>
 
 

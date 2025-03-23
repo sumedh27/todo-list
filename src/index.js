@@ -4,30 +4,24 @@ import {getProjects,createProject,createTodos,deleteProject,deleteTodo,getTodo} 
 
 const allProjects = getProjects();
 const main = document.querySelector(`main`);
-const dialog = document.querySelector(".create-project");
+const dialogProject = document.querySelector(".create-project");
+const dialogTodo = document.querySelector(".create-todo");
 
+const resetTodo = () => main.innerHTML = ``;
 
-const resetTodo = () => main.innerHTML = `
-    <div class="add-todo-button">
-        <button id="create-todo-button">Add TODO</button>
-    </div>`;
+const resetProject = () => main.innerHTML = ``;
 
-const resetProject = () => {main.innerHTML = `
-    `
-    };
-
-dialog.addEventListener("click", e => {
-  const dialogDimensions = dialog.getBoundingClientRect()
+dialogProject.addEventListener("click", e => {
+  const dialogDimensions = dialogProject.getBoundingClientRect()
   if (
     e.clientX < dialogDimensions.left ||
     e.clientX > dialogDimensions.right ||
     e.clientY < dialogDimensions.top ||
     e.clientY > dialogDimensions.bottom
   ) {
-    dialog.close()
+    dialogProject.close()
   }
 })
-
 
 console.table(allProjects);
 
@@ -36,10 +30,10 @@ const buttonOpen = function(){
     openBtn.forEach((button,index) => {
         button.addEventListener(`click`, () => {
             populateTodo(index);
+            formTodo();
         });
     });
 };
-
 
 const populateProjects = function(){
     const createProjectDiv = document.createElement(`div`);
@@ -77,9 +71,7 @@ const populateProjects = function(){
     });
 
     buttonOpen(); 
-    // buttonDelete();  
     console.table(allProjects);
-
 
 }
 
@@ -90,7 +82,7 @@ const buttonCreateProject = function(){
 
     btnCreateProject.addEventListener(`click`, (e) => {
         e.preventDefault();
-        dialog.showModal();
+        dialogProject.showModal();
     });
 };
 
@@ -106,11 +98,27 @@ const buttonBack = (function(){
     });
 })();
 
+const buttonCreateTodo = function(){
+    const btnCreateTodo = document.querySelector(`#create-todo-button`);
+    btnCreateTodo.addEventListener(`click`, (e) => {
+        e.preventDefault();
+        dialogTodo.showModal();
+    });
+};
+
 const populateTodo = function(index){
     const projName =  allProjects[index].name;
     const todos = allProjects[index].todoList;
 
     resetTodo();
+
+    const createTodoDiv = document.createElement(`div`);
+    createTodoDiv.className = 'add-todo-button';
+    main.appendChild(createTodoDiv);
+    const createTodoButton = document.createElement(`button`);
+    createTodoButton.id = "create-todo-button";
+    createTodoButton.textContent = "Add Todo";
+    createTodoDiv.appendChild(createTodoButton);
 
     const todoLists = document.createElement(`div`);
     todoLists.className = "todo-list";
@@ -120,12 +128,16 @@ const populateTodo = function(index){
     todoLists.appendChild(div);
     
     const projectName = document.createElement(`h2`);
+    projectName.className = "project-name";
     projectName.textContent = `Project :- ${projName}`;
     div.appendChild(projectName);
 
     const div2 = document.createElement(`div`);
     div2.className = "todo-cards";
     todoLists.appendChild(div2);
+
+    buttonCreateTodo();
+
 
     todos.forEach(todo => {
         const card = document.createElement(`div`);
@@ -160,11 +172,30 @@ const populateTodo = function(index){
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.onclick = function() { deleteTodo(projName,todo.title); resetTodo(); populateTodo(index)}
+        button2.onclick = function() { deleteTodo(projName,todo.title); resetTodo(); populateTodo(index); buttonCreateTodo()}
         button2.id = 'delete-todo-btn';
         div.appendChild(button2);
+        
     });
+}
 
+const formTodo = function(){
+    const projects = getProjects();
+
+    const formElement = document.querySelector(`.todo-form`);
+
+    const projectIndexName = document.querySelector(`.project-name`).textContent.slice(11);
+    const projectIndex = projects.findIndex(project => project.name === projectIndexName);
+
+    formElement.addEventListener(`submit`, (e) => {
+        e.preventDefault();
+        const todoTitle = e.target.querySelector(`[name="todo-title"]`).value;
+        createTodos(projectIndex,todoTitle);
+        e.target.reset();
+        dialogTodo.close();
+        populateTodo(projectIndex);
+        buttonCreateTodo();
+    });
 }
 
 const formProject = function(){
@@ -174,7 +205,7 @@ const formProject = function(){
         const projectName = e.target.querySelector(`[name="project-name"]`).value;
         createProject(projectName);
         e.target.reset();
-        dialog.close();
+        dialogProject.close();
         resetProject();
         populateProjects();
         buttonCreateProject();
@@ -182,6 +213,8 @@ const formProject = function(){
 }
 
 formProject();
+
+
 
 
 
