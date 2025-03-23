@@ -10,10 +10,16 @@
         <button id="back-btn">BACK</button>
         <h1>Todo List</h1>
     </header>
+    <dialog class="create-project">
+        <form class="project-form" method="dialog">
+            <label for="project-name">Enter Project Name</label>
+            <input id="project-name" name="project-name" type="text"  required/>
+            <button formmethod="dialog" type="button" id="cancel-button" onclick="document.querySelector(`.create-project`).close()">Cancel</button>
+            <button type="submit" id="submit-project-button">Submit</button>
+          </form>
+    </dialog>
     <main>
-        <div class="add-todo-button">
-            <button>Create Project</button>
-        </div>
+
 
         <!-- Project List start -->
 

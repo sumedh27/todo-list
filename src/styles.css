@@ -61,7 +61,8 @@ main{
     align-items: center;
 }
 
-.add-todo-button {
+.add-todo-button,
+.add-project-button{
     margin-left: 40px;
     justify-self: center;
 }
