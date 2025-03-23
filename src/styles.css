@@ -23,7 +23,8 @@ h1{
 
 main{
     height: 70vh;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     background-color: lightgray;
 
 }

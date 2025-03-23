@@ -5,11 +5,15 @@ import {getProjects,createProject,createTodos,deleteProject,deleteTodo,getTodo} 
 const allProjects = getProjects();
 const main = document.querySelector(`main`);
 
-const reset = () => main.innerHTML = `
+const resetTodo = () => main.innerHTML = `
     <div class="add-todo-button">
-        <button>ADD TODO</button>
+        <button id="todo-button">Add TODO</button>
     </div>`;
 
+const resetProject = () => main.innerHTML = `
+    <div class="add-todo-button">
+        <button id="project-button">Create Project</button>
+    </div>`;
 
 
 console.table(allProjects);
@@ -27,7 +31,7 @@ const buttonBack = (function(){
     const backBtn = document.querySelector("#back-btn");
 
     backBtn.addEventListener(`click`, () => {
-        reset();
+        resetTodo();
         populateProjects();
     });
 })();
@@ -72,7 +76,7 @@ const populateProjects = function(){
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.onclick = function() { deleteProject(project.name); reset(); populateProjects();}
+        button2.onclick = function() { deleteProject(project.name); resetTodo(); populateProjects();}
         button2.id = 'delete-btn';
         div.appendChild(button2);
     });
@@ -91,7 +95,7 @@ const populateTodo = function(index){
     const projName =  allProjects[index].name;
     const todos = allProjects[index].todoList;
 
-    reset();
+    resetTodo();
 
     const todoLists = document.createElement(`div`);
     todoLists.className = "todo-list";
@@ -141,7 +145,8 @@ const populateTodo = function(index){
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.onclick = function() { deleteTodo(projName,todo.name); reset(); populateTodo(index)}
+        button2.onclick = function() { deleteTodo(projName,todo.title); resetTodo(); populateTodo(index)}
+        // button2.onclick = function() { console.log(todo.title)};
         button2.id = 'delete-todo-btn';
         div.appendChild(button2);
     });

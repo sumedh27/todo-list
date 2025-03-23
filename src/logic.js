@@ -39,13 +39,15 @@ const createTodos = function (partOfProject,title,description,dueDate,priority,c
 
 createTodos(0,`Saturday Leg Day`,`Do leg workout on saturday`,`25-03-2025`,`high`,false);
 createTodos(0,`Monday Abs Day`,`Do abs workout on Monday`,`23-03-2025`,`high`,false);
+createTodos(0,`Friday Abs Day`,`Do abs workout on Monday`,`23-03-2025`,`high`,false);
+createTodos(0,`Sunday Abs Day`,`Do abs workout on Monday`,`23-03-2025`,`high`,false);
 createTodos(1,`Wake up at 8`,`wake up at 8 am to run some home errands`,`29-03-2025`,`high`,false);
 createTodos(2,`Walk in the Park`,`Take a nice lil walk in the evening in nearest Park`,`01-04-2025`,`low`,false);
 
-const deleteTodo = function(projectName,todoName){
+const deleteTodo = function(projectName,todoTitle){
     
     const findProjectIndex = allProjects.findIndex(project => project.name === projectName);
-    const findTodoIndex = allProjects[findProjectIndex].todoList.findIndex(todo => todo.name === todoName);
+    const findTodoIndex = allProjects[findProjectIndex].todoList.findIndex(todo => todo.title === todoTitle);
 
     // const todos = allProjects[findProjectIndex].todoList;
 
