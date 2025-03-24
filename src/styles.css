@@ -90,5 +90,18 @@ footer{
 
 h3{
     margin: 0;
+}
 
+dialog{
+    height: 40%;
+    width: 40%;
+    overflow: hidden;
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px
 }

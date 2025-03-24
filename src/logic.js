@@ -33,6 +33,9 @@ const createTodos = function (partOfProject,title,description,dueDate,priority,c
             checklist: checklist
         }
 
+    if(!title || !description || !dueDate || !priority || checklist === null){
+        return;
+    }
 
     allProjects[partOfProject].todoList.push(todosObj);
 };
@@ -70,17 +73,34 @@ const deleteProject = function(projectName){
 
 // deleteProject(`Go OUTSIDE`);
 
-const getTodo = function(projectName,index){
-    const findProjectIndex = allProjects.findIndex(project => project.name === projectName);
+const editTodo = function(partOfProject,todoIndex,title,description,dueDate,priority,checklist){
 
-    const todos = allProjects[findProjectIndex].todoList;
+    const updateTodoObj = 
+    {
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        priority: priority,
+        checklist: checklist
+    }
 
-    return todos[index];
+    if(!title || !description || !dueDate || !priority || checklist === null){
+        return;
+    }
+
+    const deleteTodo = allProjects[partOfProject].todoList.splice(todoIndex,1);
+    // console.log(allProjects[partOfProject]);
+    const addUpdatedTodo =allProjects[partOfProject].todoList.splice(todoIndex,0,updateTodoObj);
+    // console.log(allProjects[partOfProject]);
+
+    return addUpdatedTodo;
+
+    
 
 }
 
-// getTodo(`Workout`,1);
+// editTodo(0,1,`Monday Abs Day1111111`,`Do abs workout on Monday`,`23-03-2025`,`high`,false)
 
 
 
-export {getProjects,createProject,createTodos,deleteProject,deleteTodo,getTodo};
+export {getProjects,createProject,createTodos,deleteProject,deleteTodo,editTodo};

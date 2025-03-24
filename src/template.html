@@ -23,7 +23,32 @@
         <form class="todo-form" method="dialog">
             <label for="todo-title">Enter Todo Title</label>
             <input id="todo-title" name="todo-title" type="text"  required/>
+            <label for="todo-description">Enter Todo Description</label>
+            <input id="todo-description" name="todo-description" type="text"  required/>
+            <label for="todo-duedate">Enter Todo Due Date</label>
+            <input id="todo-duedate" name="todo-duedate" type="text"  required/>
+            <label for="todo-priority">Enter Todo Priority</label>
+            <input id="todo-priority" name="todo-priority" type="text"  required/>
+            <label for="todo-checklist">Enter Todo Checklist</label>
+            <input id="todo-checklist" name="todo-checklist" type="text"  required/>
             <button formmethod="dialog" type="button" id="cancel-button" onclick="document.querySelector(`.create-todo`).close()">Cancel</button>
+            <button type="submit" id="submit-project-button">Submit</button>
+          </form>
+    </dialog>
+
+    <dialog class="edit-todo">
+        <form class="edit-todo-form" method="dialog">
+            <label for="edit-todo-title">Enter Todo Title</label>
+            <input id="edit-todo-title" name="edit-todo-title" type="text"  required/>
+            <label for="edit-todo-description">Enter Todo Description</label>
+            <input id="edit-todo-description" name="edit-todo-description" type="text"  required/>
+            <label for="edit-todo-duedate">Enter Todo Due Date</label>
+            <input id="edit-todo-duedate" name="edit-todo-duedate" type="text"  required/>
+            <label for="edit-todo-priority">Enter Todo Priority</label>
+            <input id="edit-todo-priority" name="edit-todo-priority" type="text"  required/>
+            <label for="edit-todo-checklist">Enter Todo Checklist</label>
+            <input id="edit-todo-checklist" name="edit-todo-checklist" type="text"  required/>
+            <button formmethod="dialog" type="button" id="cancel-button" onclick="document.querySelector(`.edit-todo`).close()">Cancel</button>
             <button type="submit" id="submit-project-button">Submit</button>
           </form>
     </dialog>

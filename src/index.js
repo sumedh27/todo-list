@@ -1,11 +1,12 @@
 import styles from "./styles.css"
 
-import {getProjects,createProject,createTodos,deleteProject,deleteTodo,getTodo} from "./logic.js"
+import {getProjects,createProject,createTodos,deleteProject,deleteTodo,editTodo} from "./logic.js"
 
 const allProjects = getProjects();
 const main = document.querySelector(`main`);
 const dialogProject = document.querySelector(".create-project");
 const dialogTodo = document.querySelector(".create-todo");
+const dialogEditTodo = document.querySelector(".edit-todo");
 
 const resetTodo = () => main.innerHTML = ``;
 
@@ -25,15 +26,19 @@ dialogProject.addEventListener("click", e => {
 
 console.table(allProjects);
 
-const buttonOpen = function(){
-    const openBtn = document.querySelectorAll(`#open-btn`);
-    openBtn.forEach((button,index) => {
-        button.addEventListener(`click`, () => {
-            populateTodo(index);
-            formTodo();
-        });
-    });
-};
+// const buttonOpen = function(){
+//     const openBtn = document.querySelectorAll(`#open-btn`);
+//     openBtn.forEach((button,index) => {
+//         button.addEventListener(`click`, () => {
+//             resetTodo();
+//             populateTodo(index);
+//             formTodo(index);
+//         });
+//     });
+// };
+
+
+
 
 const populateProjects = function(){
     const createProjectDiv = document.createElement(`div`);
@@ -54,6 +59,7 @@ const populateProjects = function(){
         projectContainer.appendChild(card);
 
         const name = document.createElement(`h2`);
+        name.className = `${project.name}`
         name.textContent = project.name;
         card.appendChild(name);
 
@@ -62,6 +68,12 @@ const populateProjects = function(){
         const button1 = document.createElement(`button`);
         button1.id = 'open-btn';
         button1.textContent = "Open";
+        button1.onclick = function() {
+            const projectName = card.querySelector(`h2`).textContent;
+            const indexOfProject = allProjects.findIndex(project => project.name === projectName);
+            resetTodo();
+            populateTodo(indexOfProject);
+        };
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
@@ -70,7 +82,8 @@ const populateProjects = function(){
         div.appendChild(button2);
     });
 
-    buttonOpen(); 
+
+    // buttonOpen(); 
     console.table(allProjects);
 
 }
@@ -91,7 +104,8 @@ buttonCreateProject();
 const buttonBack = (function(){
     const backBtn = document.querySelector("#back-btn");
 
-    backBtn.addEventListener(`click`, () => {
+    backBtn.addEventListener(`click`, (e) => {
+        e.preventDefault();
         resetProject();
         populateProjects();
         buttonCreateProject();
@@ -103,6 +117,7 @@ const buttonCreateTodo = function(){
     btnCreateTodo.addEventListener(`click`, (e) => {
         e.preventDefault();
         dialogTodo.showModal();
+        formTodo();
     });
 };
 
@@ -168,35 +183,84 @@ const populateTodo = function(index){
         card.appendChild(div);    
         const button1 = document.createElement(`button`);
         button1.id = 'edit-btn';
+        button1.onclick = function(){
+                dialogEditTodo.showModal();
+                const formEditTodo = (function(){
+                    const editFormElement = document.querySelector(`.edit-todo-form`);
+                    const todoTitle = editFormElement.querySelector(`input[name="edit-todo-title"]`)
+                    const todoDescription = editFormElement.querySelector(`input[name="edit-todo-description"]`)
+                    const todoDueDate = editFormElement.querySelector(`input[name="edit-todo-duedate"]`)
+                    const todoPriority = editFormElement.querySelector(`input[name="edit-todo-priority"]`)
+                    const todoChecklist = editFormElement.querySelector(`input[name="edit-todo-checklist"]`)
+
+                    const todoName = todo.title;
+                    const todoIndex = allProjects[index].todoList.findIndex(todo => todo.title === todoName);
+                    console.log(todoIndex);
+
+                    todoTitle.value = todo.title;
+                    todoDescription.value = todo.description;
+                    todoDueDate.value = todo.dueDate;
+                    todoPriority.value = todo.priority;
+                    todoChecklist.value = todo.checklist;
+
+                    editFormElement.addEventListener(`submit`, (e) => {
+                        e.preventDefault();
+                        // const projectName = document.querySelector(`h2`).textContent.slice(11);
+                        // const indexOfProject = allProjects.findIndex(project => project.name === projectName);
+                        console.log(`In the listener ${projectName}`);
+                        const todoTitle = e.target.querySelector(`[name="edit-todo-title"]`).value;
+                        const todoDescription = e.target.querySelector(`[name="edit-todo-description"]`).value;
+                        const todoDueDate = e.target.querySelector(`[name="edit-todo-duedate"]`).value;
+                        const todoPriority = e.target.querySelector(`[name="edit-todo-priority"]`).value;
+                        const todoChecklist = e.target.querySelector(`[name="edit-todo-checklist"]`).value;
+
+                        editTodo(index,todoIndex,todoTitle,todoDescription,todoDueDate,todoPriority,todoChecklist)
+
+                        e.target.reset();
+                        dialogEditTodo.close();
+                        resetTodo();
+                        populateTodo(index);
+                        console.log(`Project index is: ${index}`);
+                    });
+                })();
+        };
         button1.textContent = "Edit";
         div.appendChild(button1);
         const button2 = document.createElement(`button`);
         button2.textContent = "Delete";
-        button2.onclick = function() { deleteTodo(projName,todo.title); resetTodo(); populateTodo(index); buttonCreateTodo()}
+        button2.onclick = function() { deleteTodo(projName,todo.title);populateTodo(index); }
         button2.id = 'delete-todo-btn';
         div.appendChild(button2);
         
     });
+
 }
 
+
 const formTodo = function(){
-    const projects = getProjects();
 
     const formElement = document.querySelector(`.todo-form`);
 
-    const projectIndexName = document.querySelector(`.project-name`).textContent.slice(11);
-    const projectIndex = projects.findIndex(project => project.name === projectIndexName);
-
     formElement.addEventListener(`submit`, (e) => {
         e.preventDefault();
+        const projectName = document.querySelector(`h2`).textContent.slice(11);
+        const indexOfProject = allProjects.findIndex(project => project.name === projectName);
+        console.log(`In the listener ${projectName}`);
         const todoTitle = e.target.querySelector(`[name="todo-title"]`).value;
-        createTodos(projectIndex,todoTitle);
+        const todoDescription = e.target.querySelector(`[name="todo-description"]`).value;
+        const todoDueDate = e.target.querySelector(`[name="todo-duedate"]`).value;
+        const todoPriority = e.target.querySelector(`[name="todo-priority"]`).value;
+        const todoChecklist = e.target.querySelector(`[name="todo-checklist"]`).value;
+        console.log(todoTitle);
+        createTodos(indexOfProject,todoTitle,todoDescription,todoDueDate,todoPriority,todoChecklist);
         e.target.reset();
         dialogTodo.close();
-        populateTodo(projectIndex);
-        buttonCreateTodo();
+        resetTodo();
+        populateTodo(indexOfProject);
+        console.log(`Project index is: ${indexOfProject}`);
     });
 }
+
 
 const formProject = function(){
     const formElement = document.querySelector(`.project-form`);
@@ -207,12 +271,14 @@ const formProject = function(){
         e.target.reset();
         dialogProject.close();
         resetProject();
-        populateProjects();
+        populateProjects(); 
         buttonCreateProject();
     });
 }
 
 formProject();
+
+
 
 
 
